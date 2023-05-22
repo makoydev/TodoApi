@@ -1,23 +1,36 @@
-import { useState } from "react";
-import { debounce } from "lodash";
+import { useState, useEffect } from "react";
 
 interface TodoFormProps {
   onSubmit: (title: string) => void;
+  inputValue: string;
+  onInputChange: (value: string) => void;
+  isEditing: boolean;
 }
 
-const TodoForm: React.FC<TodoFormProps> = ({ onSubmit }) => {
-  const [inputValue, setInputValue] = useState("");
+const TodoForm: React.FC<TodoFormProps> = ({
+  onSubmit,
+  inputValue,
+  onInputChange,
+  isEditing,
+}) => {
+  const [debouncedInputValue, setDebouncedInputValue] = useState(inputValue);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedInputValue(inputValue);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
-    onSubmit(inputValue);
-    setInputValue("");
+    if (!debouncedInputValue.trim()) return;
+    onSubmit(debouncedInputValue);
+    onInputChange("");
   };
-
-  const handleInputChange = debounce((value: string) => {
-    setInputValue(value);
-  }, 300);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -25,10 +38,9 @@ const TodoForm: React.FC<TodoFormProps> = ({ onSubmit }) => {
         type="text"
         placeholder="Enter a new Todo"
         value={inputValue}
-        onChange={(e) => handleInputChange(e.target.value)}
+        onChange={(e) => onInputChange(e.target.value)}
       />
-
-      <button type="submit">Add Todo</button>
+      <button type="submit">{isEditing ? "Update" : "Add Todo"}</button>
     </form>
   );
 };
