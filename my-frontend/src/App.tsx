@@ -19,7 +19,7 @@ const App = () => {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/todos");
+      const response = await axios.get("http://localhost:5258/api/todos");
       setTodos(response.data);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -30,7 +30,7 @@ const App = () => {
     if (!title.trim()) return;
 
     try {
-      const response = await axios.post("http://localhost:5000/api/todos", {
+      const response = await axios.post("http://localhost:5258/api/todos", {
         title: title,
         completed: false,
       });
