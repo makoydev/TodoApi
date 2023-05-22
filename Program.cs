@@ -35,7 +35,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("MyAllowSpecificOrigins");
+// app.UseCors("MyAllowSpecificOrigins");
+
+app.UseCors(builder =>
+{
+    builder.WithOrigins("http://localhost:3000") // Specify the allowed origins
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+});
 
 app.UseAuthorization();
 
