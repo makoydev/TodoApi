@@ -7,8 +7,8 @@
 
    namespace TodoApi.Controllers
    {
-       [ApiController]
-       [Route("api/[controller]")]
+       [Route("api/todos")]
+[ApiController]
        public class TodoController : ControllerBase
        {
            private readonly TodoContext _context;

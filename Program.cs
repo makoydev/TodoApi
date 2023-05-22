@@ -35,11 +35,8 @@ app.UseCors("MyAllowSpecificOrigins");
 
 app.UseAuthorization();
 
-app.Map("/api", api =>
-{
-    api.UseRouting();
-    api.MapControllers();
-});
+app.UseRouting();
+app.MapControllers();
 
 app.MapWhen(
     context => !context.Request.Path.StartsWithSegments("/api"),
